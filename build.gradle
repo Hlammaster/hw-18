@@ -17,6 +17,7 @@ compileTestJava{
 
 dependencies {
     testImplementation (
+            "io.rest-assured:rest-assured:5.3.0",
             'com.codeborne:selenide:6.12.2',
             'org.junit.jupiter:junit-jupiter:5.9.2'
     )
