@@ -1,9 +1,19 @@
+package tests;
+
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.http.ContentType;
+import models.lombok.UpdateAccBodyLombokModel;
+import models.lombok.UpdateAccBodyResponseLombokModel;
+import models.pogo.UpdateAccBodyModel;
+import models.pogo.UpdateAccBodyResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class regressTests {
 
@@ -44,12 +54,15 @@ public class regressTests {
 
     @Test
     void updateUserAccountTest() {
-        String body = "{ \"name\": \"morpheus\", \"job\": \"zion resident\" }";
+        UpdateAccBodyLombokModel accountBody = new UpdateAccBodyLombokModel();
+        accountBody.setName("morpheus");
+        accountBody.setJob("zion resident");
 
-        given()
+       UpdateAccBodyResponseLombokModel response = given()
+               .filter(new AllureRestAssured())
                 .log().uri()
                 .log().body()
-                .body(body)
+                .body(accountBody)
                 .contentType(ContentType.JSON)
                 .when()
                 .patch("https://reqres.in/api/users/2")
@@ -57,8 +70,10 @@ public class regressTests {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .body("name", is("morpheus"))
-                .body("job", is("zion resident"));
+               .extract().as(UpdateAccBodyResponseLombokModel.class);
+
+        assertThat(response.getName()).isEqualTo("morpheus");
+        assertThat(response.getJob()).isEqualTo("zion resident");
 
 
     }
