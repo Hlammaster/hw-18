@@ -4,16 +4,12 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.http.ContentType;
 import models.lombok.UpdateAccBodyLombokModel;
 import models.lombok.UpdateAccBodyResponseLombokModel;
-import models.pogo.UpdateAccBodyModel;
-import models.pogo.UpdateAccBodyResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class regressTests {
 
