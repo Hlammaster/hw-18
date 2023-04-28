@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UpdateAccBodyResponseLombokModel {
 
-    String name, updatedAt, job;
+    String name, updatedAt, job, id;
 
 
 }
