@@ -1,15 +1,14 @@
 package tests;
 
-import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.http.ContentType;
+import models.lombok.UnSucRegistrationModel;
 import models.lombok.UpdateAccBodyLombokModel;
 import models.lombok.UpdateAccBodyResponseLombokModel;
-import models.lombok.UsersListResponseModel;
+import models.lombok.getUsersRequestModel;
 import models.pogo.CreateResponseModel;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import specs.LoginSpecs;
 
-import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -23,42 +22,43 @@ public class RegressTests {
 
 
     @Test
+    @DisplayName("Запрос списка пользователей")
     void getUsersListTest() {
-        given()
-                .log().uri()
+        step("Make request", () ->
+        given(loginRequestSpec)
                 .when()
-                .get("https://reqres.in/api/users?page=2")
+                .get("/users?page=2")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemes/status-scheme-responce.json"));
-
+                .spec(getUsersResponseSpec)
+                .body(matchesJsonSchemaInClasspath("schemes/status-scheme-responce.json")));
 
     }
+
     @Test
+    @DisplayName("Создание нового профиля")
     void createUserTest() {
         UpdateAccBodyLombokModel accountBody = new UpdateAccBodyLombokModel();
         accountBody.setName("morpheus");
         accountBody.setJob("leader");
 
-        CreateResponseModel response =
+        CreateResponseModel response = step("Make request", () ->
                 given(loginRequestSpec)
                         .body(accountBody)
                         .when()
                         .post("/users")
                         .then()
                         .spec(createResponseSpec)
-                        .extract().as(CreateResponseModel.class);
+                        .extract().as(CreateResponseModel.class));
 
-
-        assertThat(response.getName()).isEqualTo("morpheus");
+        step("Verify response", () ->
+                assertThat(response.getName()).isEqualTo("morpheus"));
         assertThat(response.getJob()).isEqualTo("leader");
 
 
     }
 
     @Test
+    @DisplayName("Редактирование профиля")
     void updateUserAccountTest() {
         UpdateAccBodyLombokModel accountBody = new UpdateAccBodyLombokModel();
         accountBody.setName("morpheus");
@@ -80,36 +80,33 @@ public class RegressTests {
     }
 
     @Test
+    @DisplayName("Удаление профиля")
     void deleteUserTest() {
-
-        given()
-                .log().uri()
+        step("Make request", () ->
+        given(loginRequestSpec)
                 .when()
-                .delete("https://reqres.in/api/users/2")
+                .delete("/users/2")
                 .then()
-                .log().all()
-                .statusCode(204);
+                .spec(deleteResponseSpec));
 
 
     }
 
     @Test
+    @DisplayName("Неуспешная регистрация")
     void unsuccessfulRegistrationTest() {
-        String body = "{ \"email\": \"sydney@fife\" }";
+        step("Make request", () -> {
+            UnSucRegistrationModel accountbody = new UnSucRegistrationModel();
+            accountbody.setEmail("sydney@fife");
+            given(loginRequestSpec)
+                    .body(accountbody)
+                    .when()
+                    .post("/register")
+                    .then()
+                    .spec(unSucRegistrationResponseSpec)
+                    .body("error", is("Missing password"));
 
-        given()
-                .log().uri()
-                .body(body)
-                .contentType(ContentType.JSON)
-                .when()
-                .post("https://reqres.in/api/register")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(400)
-                .body("error", is("Missing password"));
-
-
+        });
     }
 
 
