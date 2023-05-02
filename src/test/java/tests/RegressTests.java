@@ -1,10 +1,9 @@
 package tests;
 
-import io.restassured.http.ContentType;
+import io.qameta.allure.Feature;
 import models.lombok.UnSucRegistrationModel;
 import models.lombok.UpdateAccBodyLombokModel;
 import models.lombok.UpdateAccBodyResponseLombokModel;
-import models.lombok.getUsersRequestModel;
 import models.pogo.CreateResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,27 +13,27 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.LoginSpecs.*;
 
 public class RegressTests {
 
 
     @Test
+    @Feature("Api Tests")
     @DisplayName("Запрос списка пользователей")
     void getUsersListTest() {
         step("Make request", () ->
-        given(loginRequestSpec)
-                .when()
-                .get("/users?page=2")
-                .then()
-                .spec(getUsersResponseSpec)
-                .body(matchesJsonSchemaInClasspath("schemes/status-scheme-responce.json")));
+                given(loginRequestSpec)
+                        .when()
+                        .get("/users?page=2")
+                        .then()
+                        .spec(getUsersResponseSpec)
+                        .body(matchesJsonSchemaInClasspath("schemes/status-scheme-responce.json")));
 
     }
 
     @Test
+    @Feature("Api Tests")
     @DisplayName("Создание нового профиля")
     void createUserTest() {
         UpdateAccBodyLombokModel accountBody = new UpdateAccBodyLombokModel();
@@ -58,6 +57,8 @@ public class RegressTests {
     }
 
     @Test
+    @Feature("Api Tests")
+
     @DisplayName("Редактирование профиля")
     void updateUserAccountTest() {
         UpdateAccBodyLombokModel accountBody = new UpdateAccBodyLombokModel();
@@ -80,19 +81,23 @@ public class RegressTests {
     }
 
     @Test
+    @Feature("Api Tests")
+
     @DisplayName("Удаление профиля")
     void deleteUserTest() {
         step("Make request", () ->
-        given(loginRequestSpec)
-                .when()
-                .delete("/users/2")
-                .then()
-                .spec(deleteResponseSpec));
+                given(loginRequestSpec)
+                        .when()
+                        .delete("/users/2")
+                        .then()
+                        .spec(deleteResponseSpec));
 
 
     }
 
     @Test
+    @Feature("Api Tests")
+
     @DisplayName("Неуспешная регистрация")
     void unsuccessfulRegistrationTest() {
         step("Make request", () -> {
