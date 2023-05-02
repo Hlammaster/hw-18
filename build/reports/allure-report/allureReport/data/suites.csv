@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Fri Apr 28 15:47:39 MSK 2023","Fri Apr 28 15:47:41 MSK 2023","2739","","tests.regressTests","","tests.regressTests","updateUserAccountTest","updateUserAccountTest()",""
