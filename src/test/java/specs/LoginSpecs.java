@@ -8,7 +8,6 @@ import io.restassured.specification.ResponseSpecification;
 
 import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 public class LoginSpecs {
@@ -47,15 +46,6 @@ public class LoginSpecs {
             .log(LogDetail.BODY)
             .expectStatusCode(400)
             .build();
-
-
-
-
-
-
-
-
-
 
 
 }

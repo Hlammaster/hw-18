@@ -17,7 +17,6 @@ import static specs.LoginSpecs.*;
 
 public class RegressTests {
 
-
     @Test
     @Feature("Api Tests")
     @DisplayName("Запрос списка пользователей")
@@ -40,6 +39,7 @@ public class RegressTests {
         accountBody.setName("morpheus");
         accountBody.setJob("leader");
 
+
         CreateResponseModel response = step("Make request", () ->
                 given(loginRequestSpec)
                         .body(accountBody)
@@ -58,7 +58,6 @@ public class RegressTests {
 
     @Test
     @Feature("Api Tests")
-
     @DisplayName("Редактирование профиля")
     void updateUserAccountTest() {
         UpdateAccBodyLombokModel accountBody = new UpdateAccBodyLombokModel();
@@ -82,7 +81,6 @@ public class RegressTests {
 
     @Test
     @Feature("Api Tests")
-
     @DisplayName("Удаление профиля")
     void deleteUserTest() {
         step("Make request", () ->
@@ -97,7 +95,6 @@ public class RegressTests {
 
     @Test
     @Feature("Api Tests")
-
     @DisplayName("Неуспешная регистрация")
     void unsuccessfulRegistrationTest() {
         step("Make request", () -> {
